@@ -50,14 +50,14 @@ public class SecurityConfig {
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
                         // ✅ Swagger / OpenAPI 문서 경로 허용 (추가)
-                        .requestMatchers(
+                        .antMatchers(
                                 "/swagger-ui/**",
                                 "/v3/api-docs/**",
                                 "/swagger-ui.html"
                         ).permitAll()
 
                         // 로그인 API 경로 등은 인증 없이 누구나 접근 가능하게 설정 (Permit All)
-                        .requestMatchers(SecurityConstants.PUBLIC_URLS).permitAll()
+                        .antMatchers(SecurityConstants.PUBLIC_URLS).permitAll()
 
 //                        // 파일 업로드 경로 허용
 //                        .requestMatchers("/upload/**").permitAll()

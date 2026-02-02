@@ -1,6 +1,6 @@
 package org.rookies.zdme.model.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 import org.rookies.zdme.model.entity.User;
 

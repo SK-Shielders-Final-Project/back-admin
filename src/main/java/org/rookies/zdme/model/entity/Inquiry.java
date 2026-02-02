@@ -1,7 +1,7 @@
 package org.rookies.zdme.model.entity;
 
 import java.time.LocalDateTime;
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.*;
 
 @Entity

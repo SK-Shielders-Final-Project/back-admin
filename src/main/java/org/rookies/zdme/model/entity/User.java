@@ -1,6 +1,6 @@
 package org.rookies.zdme.model.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -13,8 +13,6 @@ import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
 
-import jakarta.persistence.*;
-import lombok.*;
 
 @Entity
 @Table(name = "users")

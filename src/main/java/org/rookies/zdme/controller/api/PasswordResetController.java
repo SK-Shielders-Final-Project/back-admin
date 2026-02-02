@@ -1,6 +1,6 @@
 package org.rookies.zdme.controller.api;
 
-import jakarta.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletRequest;
 import org.rookies.zdme.dto.ForgotPasswordRequest;
 import org.rookies.zdme.dto.PasswordResetRequest;
 import org.rookies.zdme.service.UserService;

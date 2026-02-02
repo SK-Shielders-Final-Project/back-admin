@@ -1,4 +1,4 @@
-package org.rookies.zdme.controller.admin;
+package org.rookies.zdme.controller.api.admin;
 
 import org.rookies.zdme.dto.ApiResult;
 import lombok.RequiredArgsConstructor;

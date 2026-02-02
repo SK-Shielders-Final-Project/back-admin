@@ -1,7 +1,7 @@
 package org.rookies.zdme.service;
 
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.PersistenceContext;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import lombok.RequiredArgsConstructor;
 import org.rookies.zdme.dto.SignupRequest;
 import org.rookies.zdme.dto.UpdateUserInfoRequest;

@@ -1,6 +1,6 @@
 package org.rookies.zdme.service;
 
-import jakarta.transaction.Transactional;
+import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.rookies.zdme.dto.PaymentCancelDto;
 import org.rookies.zdme.dto.PaymentRequestDto;

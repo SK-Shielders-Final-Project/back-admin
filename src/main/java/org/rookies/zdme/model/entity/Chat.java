@@ -1,6 +1,6 @@
 package org.rookies.zdme.model.entity;
 
-import jakarta.persistence.*;
+import javax.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
