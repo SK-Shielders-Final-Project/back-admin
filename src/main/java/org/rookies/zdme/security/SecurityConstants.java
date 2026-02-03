@@ -6,6 +6,7 @@ public class SecurityConstants {
             "/api/user/auth/login",
             "/api/user/auth/signup",
             "/api/admin/auth/login",
+            "/api/2fa/**", // Allow 2FA related endpoints for the demonstration
             "/api/.well-known/jwks.json",
             "/api/auth/password-reset/**",
             "/api/auth/refresh",
