@@ -11,6 +11,7 @@ public class SecurityConstants {
             "/api/auth/refresh",
             "/api/app/verify-integrity",
             "/api/map/bikes-nearby", // 자전거 위치 정보 API 허용
+            "/api/scrap",
             "/error"
     };
 }
