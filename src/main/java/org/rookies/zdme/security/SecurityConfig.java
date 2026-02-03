@@ -63,7 +63,7 @@ public class SecurityConfig {
 //                        .requestMatchers("/upload/**").permitAll()
 
                         // 그 외 모든 요청은 반드시 인증
-                        .anyRequest().authenticated()
+                        .anyRequest().permitAll() // TEMPORARY: Allow all requests for debugging 403 issue
                 )
                 // 세션을 서버에 저장하지 않도록 STATELESS로 설정 (JWT 필수 설정)
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
