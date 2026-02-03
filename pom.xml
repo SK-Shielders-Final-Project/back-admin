@@ -127,11 +127,6 @@
 
         <!-- Google Authenticator -->
         <dependency>
-            <groupId>de.taimos</groupId>
-            <artifactId>totp-spring-boot-starter</artifactId>
-            <version>1.4</version>
-        </dependency>
-        <dependency>
             <groupId>com.warrenstrange</groupId>
             <artifactId>googleauth</artifactId>
             <version>1.5.0</version>
