@@ -18,7 +18,7 @@ import java.util.Map;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/2fa")
+@RequestMapping("/api/admin/2fa")
 public class TwoFactorAuthController {
 
     private final GoogleAuthenticator gAuth = new GoogleAuthenticator();
