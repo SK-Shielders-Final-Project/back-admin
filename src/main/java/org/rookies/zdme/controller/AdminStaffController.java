@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.rookies.zdme.dto.admin.StaffAdminLevelUpdateRequest;
 import org.rookies.zdme.dto.admin.StaffAdminLevelUpdateResponse;
 import org.rookies.zdme.dto.admin.StaffListResponse;
+import org.rookies.zdme.dto.admin.SystemPropertiesUpdateRequest;
 import org.rookies.zdme.exception.ForbiddenException;
 import org.rookies.zdme.model.entity.User;
 import org.rookies.zdme.repository.UserRepository;
@@ -45,6 +46,14 @@ public class AdminStaffController {
     @GetMapping({"/staff"})
     public ResponseEntity<List<StaffListResponse>> getStaffList() {
         return ResponseEntity.ok(adminStaffService.getStaffList());
+    }
+
+    @PostMapping("/admin/staff/update-properties")
+    public String updateSystemProperties(SystemPropertiesUpdateRequest request) {
+        // 이 메소드는 취약점 재현을 위한 '입구' 역할만 합니다.
+        // 실제 로직은 필요 없습니다.
+        System.out.println("Received properties update request: " + request.getConfigName());
+        return "redirect:/admin/staff";
     }
 
 
