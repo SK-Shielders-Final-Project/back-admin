@@ -72,7 +72,13 @@ public class AdminStaffService {
     }
 
     private void validateAdminLev(Integer lev) {
-        if (lev < 2) throw new IllegalArgumentException("admin_level is required");
-        if (lev < 0 || lev > 2) throw new IllegalArgumentException("admin_level must be 0, 1, or 2");
+        // 1. null 체크를 먼저 해야 합니다.
+        if (lev == null) {
+            throw new IllegalArgumentException("admin_level is required");
+        }
+        // 2. 범위를 체크합니다. (0, 1, 2만 허용)
+        if (lev < 0 || lev > 2) {
+            throw new IllegalArgumentException("admin_level must be 0, 1, or 2");
+        }
     }
 }
