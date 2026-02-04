@@ -61,12 +61,17 @@ public class UserAPIController {
     public ResponseEntity<?> createAuthenticationToken(@RequestBody LoginRequest authenticationRequest) {
         try {
             authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
-            final UserDetails userDetails = userService.loadUserByUsername(authenticationRequest.getUsername());
-            final String accessToken = jwtUtil.generateToken(userDetails);
-            final String refreshToken = jwtUtil.generateRefreshToken(userDetails);
-            userService.saveRefreshToken(userDetails.getUsername(), refreshToken);
-            final Long userId = ((User) userDetails).getUserId();
-            return ResponseEntity.ok(new LoginResponse(accessToken, refreshToken, userId));
+            // UserDetails를 User 엔티티로 캐스팅
+            final User user = (User) userService.loadUserByUsername(authenticationRequest.getUsername());
+            final String accessToken = jwtUtil.generateToken(user);
+            final String refreshToken = jwtUtil.generateRefreshToken(user);
+            userService.saveRefreshToken(user.getUsername(), refreshToken);
+            final Long userId = user.getUserId();
+            // is2faEnabled 값을 User 객체에서 가져옴
+            final boolean is2faEnabled = user.is2faEnabled();
+
+            // is2faEnabled를 LoginResponse의 4번째 인자로 추가
+            return ResponseEntity.ok(new LoginResponse(accessToken, refreshToken, userId, is2faEnabled));
         } catch (DisabledException e) {
             return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(Collections.singletonMap("error", "사용자 계정이 비활성화되었습니다."));
         } catch (UsernameNotFoundException e) { // For security, treat UsernameNotFound as invalid credentials

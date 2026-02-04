@@ -70,6 +70,20 @@ public class AdminStaffService {
                 .updated_at(saved.getUpdatedAt())
                 .build();
     }
+    
+    /**
+     * ✅ 2FA 최초 설정 완료 처리
+     * 최초 OTP 검증 성공 시 호출되어, 해당 유저의 2FA 상태를 활성화하고 secret 키를 DB에 영구 저장합니다.
+     * @param username 대상 사용자 아이디
+     * @param secret 사용자의 2FA 비밀 키
+     */
+    @Transactional
+    public void confirmAndEnable2FA(String username, String secret) {
+        User user = userRepository.findByUsername(username)
+                .orElseThrow(() -> new NotFoundException("User not found: " + username));
+        user.enable2FA(secret);
+        userRepository.save(user);
+    }
 
     private void validateAdminLev(Integer lev) {
         // 1. null 체크를 먼저 해야 합니다.

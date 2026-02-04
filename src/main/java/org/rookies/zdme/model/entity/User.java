@@ -9,6 +9,8 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import org.hibernate.annotations.Type;
+
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
@@ -49,12 +51,25 @@ public class User implements UserDetails {
 
     @Column(name = "card_number", length = 50)
     private String cardNumber;
-
+    
     @Column
     private LocalDateTime createdAt;
 
     @Column
     private LocalDateTime updatedAt;
+
+    @Column(name = "IS_2FA_ENABLED")
+    @Type(type = "org.hibernate.type.NumericBooleanType")
+    private boolean is2faEnabled = false;
+
+    @Column(name = "TWO_FACTOR_SECRET", length = 255)
+    private String twoFactorSecret;
+    
+    public void enable2FA(String secret) {
+        this.twoFactorSecret = secret;
+        this.is2faEnabled = true;
+        this.updatedAt = LocalDateTime.now();
+    }
 
     public void changePassword(String encodedPassword) {
         this.password = encodedPassword;
