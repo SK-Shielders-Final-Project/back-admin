@@ -8,13 +8,10 @@ import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 import org.hibernate.annotations.Type;
-
 import java.time.LocalDateTime;
 import java.util.Collection;
 import java.util.List;
-
 
 @Entity
 @Table(name = "users")
@@ -51,20 +48,30 @@ public class User implements UserDetails {
 
     @Column(name = "card_number", length = 50)
     private String cardNumber;
-    
+
     @Column
     private LocalDateTime createdAt;
 
     @Column
     private LocalDateTime updatedAt;
 
+    // IS_2FA_ENABLED 컬럼 매핑 (0/1을 false/true로 변환)
     @Column(name = "IS_2FA_ENABLED")
     @Type(type = "org.hibernate.type.NumericBooleanType")
     private boolean is2faEnabled = false;
 
     @Column(name = "TWO_FACTOR_SECRET", length = 255)
     private String twoFactorSecret;
-    
+
+    // boolean 필드의 경우 Lombok Getter와 충돌을 방지하기 위해 명시적 메서드 추가
+    public boolean is2faEnabled() {
+        return this.is2faEnabled;
+    }
+
+    public void set2faEnabled(boolean is2faEnabled) {
+        this.is2faEnabled = is2faEnabled;
+    }
+
     public void enable2FA(String secret) {
         this.twoFactorSecret = secret;
         this.is2faEnabled = true;
@@ -99,49 +106,29 @@ public class User implements UserDetails {
     }
 
     @Override
-    public String getPassword() {
-        return this.password;
-    }
+    public String getPassword() { return this.password; }
 
     @Override
-    public String getUsername() {
-        return username;
-    }
+    public String getUsername() { return username; }
 
     @Override
-    public boolean isAccountNonExpired() {
-        return true;
-    }
+    public boolean isAccountNonExpired() { return true; }
 
     @Override
-    public boolean isAccountNonLocked() {
-        return true;
-    }
+    public boolean isAccountNonLocked() { return true; }
 
     @Override
-    public boolean isCredentialsNonExpired() {
-        return true;
-    }
+    public boolean isCredentialsNonExpired() { return true; }
 
     @Override
-    public boolean isEnabled() {
-        return true;
-    }
+    public boolean isEnabled() { return true; }
 
     @Column(length = 512)
     private String refreshToken;
 
-    public void updatePoint(Long amount) {
-        // 포인트가 -가 되는 것을 방지 (비즈니스 로직 취약점)
-//        if (amount + this.totalPoint < 0) {
-//            throw new IllegalStateException("회수할 포인트가 부족합니다.");
-//        }
-        this.totalPoint += amount;
-    }
+    public void updatePoint(Long amount) { this.totalPoint += amount; }
 
-    public void updateRefreshToken(String refreshToken) {
-        this.refreshToken = refreshToken;
-    }
+    public void updateRefreshToken(String refreshToken) { this.refreshToken = refreshToken; }
 
     @PrePersist
     void prePersist() {
@@ -151,12 +138,7 @@ public class User implements UserDetails {
     }
 
     @PreUpdate
-    void preUpdate() {
-        updatedAt = LocalDateTime.now();
-    }
+    void preUpdate() { updatedAt = LocalDateTime.now(); }
 
-    public void setAdminLevel(Integer adminLevel) {
-        this.adminLevel = adminLevel;
-    }
-
+    public void setAdminLevel(Integer adminLevel) { this.adminLevel = adminLevel; }
 }

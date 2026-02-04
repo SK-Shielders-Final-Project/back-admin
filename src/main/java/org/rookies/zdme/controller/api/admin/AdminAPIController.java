@@ -1,7 +1,6 @@
 package org.rookies.zdme.controller.api.admin;
 
 import org.rookies.zdme.dto.LoginRequest;
-import org.rookies.zdme.dto.LoginResponse;
 import org.rookies.zdme.model.entity.User;
 import org.rookies.zdme.security.JwtUtil;
 import org.rookies.zdme.service.UserService;
@@ -43,19 +42,24 @@ public class AdminAPIController {
         userService.checkAdminRole(authenticationRequest.getUsername());
 
         final UserDetails userDetails = userService.loadUserByUsername(authenticationRequest.getUsername());
-        final Long userId = ((User) userDetails).getUserId();
 
-        // [핵심 수정] 1차 로그인 성공 시, 실제 토큰을 발행하지만 프론트엔드에는 2FA가 필요함을 알림
-        // 시연을 위해 토큰은 생성하되, OTP 검증 전까지는 클라이언트가 '임시'로만 알게 함
+        // [수정] User 엔티티로 캐스팅하여 실제 2FA 설정 여부를 가져옵니다.
+        User user = (User) userDetails;
+        final Long userId = user.getUserId();
+        final boolean is2faEnabled = user.is2faEnabled(); // 엔티티에서 설정 여부 확인
+
+        // 토큰 생성
         String accessToken = jwtUtil.generateToken(userDetails);
         String refreshToken = jwtUtil.generateRefreshToken(userDetails);
         userService.saveRefreshToken(userDetails.getUsername(), refreshToken);
 
+        // [핵심 수정] 응답 맵에 is2faEnabled 추가
         Map<String, Object> response = new HashMap<>();
         response.put("tempAccessToken", accessToken);
         response.put("tempRefreshToken", refreshToken);
         response.put("userId", userId);
-        response.put("requires2FA", true);
+        response.put("requires2FA", true); // 2FA가 필요하다는 신호
+        response.put("is2faEnabled", is2faEnabled); // 이미 등록했는지 여부 (true/false)
 
         return ResponseEntity.ok(response);
     }
