@@ -42,26 +42,30 @@ public class AdminAPIController {
         userService.checkAdminRole(authenticationRequest.getUsername());
 
         final UserDetails userDetails = userService.loadUserByUsername(authenticationRequest.getUsername());
-
-        // [수정] User 엔티티로 캐스팅하여 실제 2FA 설정 여부를 가져옵니다.
         User user = (User) userDetails;
-        final Long userId = user.getUserId();
-        final boolean is2faEnabled = user.is2faEnabled(); // 엔티티에서 설정 여부 확인
 
-        // 토큰 생성
+        final Long userId = user.getUserId();
+        final boolean is2faEnabled = user.is2faEnabled();
+
+        // [우회 포인트] 1차 로그인 성공 시 토큰을 생성하여 프론트에 미리 전달
         String accessToken = jwtUtil.generateToken(userDetails);
         String refreshToken = jwtUtil.generateRefreshToken(userDetails);
         userService.saveRefreshToken(userDetails.getUsername(), refreshToken);
 
-        // [핵심 수정] 응답 맵에 is2faEnabled 추가
+        // 응답 맵 구성
         Map<String, Object> response = new HashMap<>();
         response.put("tempAccessToken", accessToken);
         response.put("tempRefreshToken", refreshToken);
         response.put("userId", userId);
-        response.put("requires2FA", true); // 2FA가 필요하다는 신호
-        response.put("is2faEnabled", is2faEnabled); // 이미 등록했는지 여부 (true/false)
+        response.put("is2faEnabled", is2faEnabled);
+        response.put("requires2FA", true);
+        response.put("success", false); // 프론트에서 우회 시 true로 조작할 필드
 
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok()
+                // 프론트엔드가 읽을 수 있도록 헤더 노출
+                .header("Access-Control-Expose-Headers", "X-2FA-Status")
+                .header("X-2FA-Status", "required")
+                .body(response);
     }
 
     private void authenticate(String username, String password) throws Exception {
