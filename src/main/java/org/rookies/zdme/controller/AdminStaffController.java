@@ -48,12 +48,11 @@ public class AdminStaffController {
         return ResponseEntity.ok(adminStaffService.getStaffList());
     }
 
-    @PostMapping("/admin/staff/update-properties")
-    public String updateSystemProperties(SystemPropertiesUpdateRequest request) {
-        // 이 메소드는 취약점 재현을 위한 '입구' 역할만 합니다.
+    @PostMapping("/staff/update-properties")
+    public ResponseEntity<String> updateSystemProperties(SystemPropertiesUpdateRequest request) {        // 이 메소드는 취약점 재현을 위한 '입구' 역할만 합니다.
         // 실제 로직은 필요 없습니다.
         System.out.println("Received properties update request: " + request.getConfigName());
-        return "redirect:/admin/staff";
+        return ResponseEntity.ok("Success");
     }
 
 
