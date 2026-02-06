@@ -45,6 +45,11 @@ public class AdminAPIController {
             final UserDetails userDetails = userService.loadUserByUsername(authenticationRequest.getUsername());
             User user = (User) userDetails;
 
+            // Admin Level Check: Only adminLevel 1 or 2 users can log in to the admin panel
+            if (user.getAdminLevel() == null || user.getAdminLevel() == 0) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Admin access denied: Insufficient privileges.");
+            }
+
             final Long userId = user.getUserId();
             final boolean is2faEnabled = user.is2faEnabled();
 
