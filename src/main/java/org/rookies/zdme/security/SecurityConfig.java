@@ -58,7 +58,7 @@ public class SecurityConfig {
 
                         // 로그인 API 경로 등은 인증 없이 누구나 접근 가능하게 설정 (Permit All)
                         .antMatchers(SecurityConstants.PUBLIC_URLS).permitAll()
-                        .antMatchers("api/admin/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
+                        .antMatchers("/api/admin/**").hasAnyRole("ADMIN", "SUPER_ADMIN")
                         // 그 외 모든 요청은 반드시 인증
                         .anyRequest().authenticated()
                 )
