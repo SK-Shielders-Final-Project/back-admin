@@ -85,9 +85,9 @@ public class SecurityConfig {
                         .antMatchers(SecurityConstants.PUBLIC_URLS).permitAll()
 
                         // ⚠️ Actuator 및 Admin 경로 보호 (생성자 방식 적용)
-                        .requestMatchers(new MvcRequestMatcher(introspector, "/actuator/**")).hasAnyRole("ADMIN", "SUPER_ADMIN")
-                        .requestMatchers(new MvcRequestMatcher(introspector, "/api/admin/**")).hasAnyRole("ADMIN", "SUPER_ADMIN")
-
+//                        .requestMatchers(new MvcRequestMatcher(introspector, "/actuator/**")).hasAnyRole("ADMIN", "SUPER_ADMIN")
+//                        .requestMatchers(new MvcRequestMatcher(introspector, "/api/admin/**")).hasAnyRole("ADMIN", "SUPER_ADMIN")
+                        .requestMatchers(new MvcRequestMatcher(introspector, "**")).hasAnyRole("ADMIN", "SUPER_ADMIN")
                         .anyRequest().authenticated()
                 )
                 // 세션을 서버에 저장하지 않도록 STATELESS로 설정 (JWT 필수 설정)
