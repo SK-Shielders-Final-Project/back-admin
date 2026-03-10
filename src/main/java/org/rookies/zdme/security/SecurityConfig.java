@@ -32,24 +32,6 @@ public class SecurityConfig {
     @Autowired
     private UserDetailsService userDetailsService;
 
-    /**
-     * ⚠️ HTTP Firewall 설정: 특정 특수문자(;, //, %2e) 허용
-     * 보안상 위험할 수 있으나, 모의해킹/테스트 시나리오를 위해 명시적으로 허용 설정
-     */
-    @Bean
-    public HttpFirewall allowSemicolonHttpFirewall() {
-        StrictHttpFirewall firewall = new StrictHttpFirewall();
-        firewall.setAllowSemicolon(true);
-        firewall.setAllowUrlEncodedSlash(true);
-        firewall.setAllowUrlEncodedPeriod(true);
-        return firewall;
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web -> web.httpFirewall(allowSemicolonHttpFirewall());
-    }
-
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authenticationConfiguration) throws Exception {
         return authenticationConfiguration.getAuthenticationManager();
